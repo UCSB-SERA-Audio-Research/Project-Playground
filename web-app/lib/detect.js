@@ -41,7 +41,8 @@ var detectorElem,
     detuneElem,
     detuneAmount;
 
-window.onload = function () {
+function detectLoaded(){
+
     audioContext = new AudioContext();
     MAX_SIZE = Math.max(4, Math.floor(audioContext.sampleRate / 5000));	// corresponds to a 5kHz signal
     /*
@@ -364,6 +365,7 @@ function updatePitch(time) {
         var note = noteFromPitch(pitch);
         noteElem.innerHTML = noteStrings[note % 12];
         var detune = centsOffFromPitch(pitch, note);
+        console.log("Pitch:", Math.round(pitch), "\nNote:",noteStrings[note % 12],"\nOctave:",Math.floor(note/12)-1,"\nDetune:",centsOffFromPitch(pitch, note));
         if (detune == 0) {
             detuneElem.className = "";
             detuneAmount.innerHTML = "--";
