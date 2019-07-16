@@ -1,4 +1,3 @@
-//https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
 var express = require('express'),
     app = express();
 

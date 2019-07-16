@@ -1,6 +1,7 @@
 <script src="./lib/index.js"></script>
 <script src="./lib/decode.js"></script>
 <script src="./lib/encode.js"></script>
+<button onclick="process();">Process</button>
 <style>
     * {
         font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
@@ -9,6 +10,6 @@
     }
 </style>
 <body>
-    <input id="fileInput" type="file" name="file" />
+    <input id="fileInput" type="file" name="file" multiple />
     <pre id="fileContent"></pre>
 </body>
