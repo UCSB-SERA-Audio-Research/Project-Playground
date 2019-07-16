@@ -1,0 +1,21 @@
+<script type="module">
+    import { MidiParser } from './lib/midi-parser.js';
+    window.MidiParser = MidiParser;
+    var source = document.getElementById('fileInput');
+    MidiParser.parse(source, function (obj) {
+        readMIDI(obj);
+    });
+</script>
+<script src="./lib/index.js"></script>
+<style>
+    * {
+        font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
+        color: white;
+        background-color: rgb(29, 29, 29);
+    }
+</style>
+
+<body>
+    <input id="fileInput" type="file" name="file" />
+    <pre id="fileContent"></pre>
+</body>

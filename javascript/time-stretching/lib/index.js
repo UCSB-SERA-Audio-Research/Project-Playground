@@ -1,4 +1,6 @@
-// ffmpeg -i note.wav -filter:a "atempo=0.5" -b:a 320K test.wav
+// ffmpeg -i note.wav -filter:a atempo=0.5 -b:a 320K test.wav
+// ffmpeg -i note.wav -af asetrate=44100*1/2,atempo=1/2 test.wav
+//https://superuser.com/questions/292833/how-to-change-audio-frequency
 // start processing when the file is uploaded.
 window.onload = () => {
     document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
@@ -29,7 +31,7 @@ function handleFileSelect(event) {
             window.prompt = () => {}; // disable the prompt function.
             // use ffmpeg to separate audio from video.
             var results = ffmpeg_run({
-                arguments: ("-i "+filename+" -filter:a atempo=0.5 -b:a 320K out.wav").split(" "),
+                arguments: ("-i "+filename+" -af asetrate=44100*1/2,atempo=1/2 out.wav").split(" "),
                 files: [
                     {
                         data: fileByteArray,
