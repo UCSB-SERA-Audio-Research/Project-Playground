@@ -5,21 +5,21 @@ function readMIDI(raw) {
     var midi = {
         meta: {
             signature: ((() => {
-                for(var i=0;i<raw.track.length;i++){
-                    var track=raw.track[i];
+                for (var i = 0; i < raw.track.length; i++) {
+                    var track = raw.track[i];
                     return track.event.find(item => {
                         return item.metaType == 88;
                     });
                 }
-            })()||{data:undefined}).data,
+            })() || { data: undefined }).data,
             bpm: 60000000 / ((() => {
-                for(var i=0;i<raw.track.length;i++){
-                    var track=raw.track[i];
+                for (var i = 0; i < raw.track.length; i++) {
+                    var track = raw.track[i];
                     return track.event.find(item => {
                         return item.metaType == 81;
                     });
                 }
-            })()||{data:500000}).data,
+            })() || { data: 500000 }).data,
             division: raw.timeDivision
         },
         notes: (() => {
@@ -43,21 +43,23 @@ function readMIDI(raw) {
         var ticksPerBeat = midi.meta.division & 0x7FFF;
         tickLength = 1 / ((midi.meta.bpm * ticksPerBeat) / 60);
     } else {
-        var SMPTE = ((midi.meta.division & 0x7F00)/0xFF);
+        var SMPTE = ((midi.meta.division & 0x7F00) / 0xFF);
         SMPTE = (SMPTE == 29 ? 29.97 : SMPTE);
         var ticksPerFrame = midi.meta.division & 0x00FF;
         tickLength = 1 / (SMPTE * ticksPerFrame);
     }
     var total = 0;
+    var sequence = [];
     midi.notes.forEach(note => {
         total += tickLength * note.time;
         //setTimeout(()=>{
         if (note.type <= 0x9) {
-            console.log(total, notes[note.data[0] - 21], (note.type == 9 ? "on" : "off"));
+            //console.log(total, notes[note.data[0] - 21], (note.type == 9 ? "on" : "off"));
+            sequence.push({ time: total, note: notes[note.data[0] - 21], type: (note.type == 9 ? "on" : "off") });
         } else {
-            console.log(total, note);
         }
         //},total);
     });
+    console.log(sequence);
 }
 
