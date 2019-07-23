@@ -1,41 +1,38 @@
 #include <WebUSB.h>
 
 /**
- * Creating an instance of WebUSBSerial will add an additional USB interface to
- * the device that is marked as vendor-specific (rather than USB CDC-ACM) and
- * is therefore accessible to the browser.
- *
- * The URL here provides a hint to the browser about what page the user should
- * navigate to to interact with the device.
- */
-WebUSB WebUSBSerial(1 /* https:// */, "webusb.github.io/arduino/demos/console");
+   Creating an instance of WebUSBSerial will add an additional USB interface to
+   the device that is marked as vendor-specific (rather than USB CDC-ACM) and
+   is therefore accessible to the browser.
+
+   The URL here provides a hint to the browser about what page the user should
+   navigate to to interact with the device.
+*/
+WebUSB WebUSBSerial(1 /* https:// */, "ucsb-sera-audio-research.github.io/Prototypes/");
 
 #define Serial WebUSBSerial
 
-const int ledPin = 13;
+const int SOFT_POT_PIN = A0;
 
 void setup() {
   while (!Serial) {
     ;
   }
   Serial.begin(9600);
-  Serial.write("Sketch begins.\r\n> ");
   Serial.flush();
-  pinMode(ledPin, OUTPUT);
+  pinMode(SOFT_POT_PIN, INPUT);
 }
 
 void loop() {
   if (Serial && Serial.available()) {
     int byte = Serial.read();
     Serial.write(byte);
-    if (byte == 'H') {
-      Serial.write("\r\nTurning LED on.");
-      digitalWrite(ledPin, HIGH);
-    } else if (byte == 'L') {
-      Serial.write("\r\nTurning LED off.");
-      digitalWrite(ledPin, LOW);
-    }
-    Serial.write("\r\n> ");
-    Serial.flush();
+    // Read in the soft pot's ADC value
+    int softPotADC = analogRead(SOFT_POT_PIN);
+    // Map the 0-1023 value to 0-40
+    float scaled = softPotADC / 1023.0;
+
+    Serial.println(scaled);
+  //  Serial.flush();
   }
 }
